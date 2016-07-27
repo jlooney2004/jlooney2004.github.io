@@ -16,7 +16,7 @@ var CONFIG = {
       "width": 46,
       "height": 64,
       "scale": 1,
-      "gravity": 1800,
+      "gravity": 18,
       "outkill": false,
       "flap": {
         "velocity": -420,
@@ -47,7 +47,7 @@ var CONFIG = {
   "pipe": {
     "width": 90,
     "height": 500,
-    "space": 1800,
+    "space": 190,
     "offset": 150,
     "speed": 170,
     "interval": 1700 
