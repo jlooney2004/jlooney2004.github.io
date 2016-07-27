@@ -13,13 +13,13 @@ var CONFIG = {
   },
   "flappy": {
       "x": 60,
-      "width": 46,
-      "height": 64,
+      "width": 20,
+      "height": 20,
       "scale": 1,
-      "gravity": 120,
+      "gravity": 0,
       "outkill": false,
       "flap": {
-        "velocity": -420,
+        "velocity": 420,
         "frame": 0,
         "rotate": -40,
         "norotate": false
