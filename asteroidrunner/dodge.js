@@ -6,9 +6,9 @@ var C = {
   },
   dodger: {
     image: 'assets/dodger.png',
-    width: 46,
+    width: 64,
     height: 64,
-    frames: 2,
+    frames: 4,
     startx: 160,
     starty: 500,
     bounce: 0.3,
@@ -16,7 +16,7 @@ var C = {
     speed: 800
   },
   dodgeme: {
-    image: 'assets/dodgeme.png',
+    image: 'assets/doge.png',
     width: 64,
     height: 64,
     frames: 1,
