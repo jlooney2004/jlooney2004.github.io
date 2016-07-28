@@ -1,3 +1,32 @@
+var C = {
+  background: {
+    image: 'assets/background.png',
+    scroll: 700,
+    scale: 1
+  },
+  dodger: {
+    image: 'assets/dodger.png',
+    width: 46,
+    height: 64,
+    frames: 2,
+    startx: 160,
+    starty: 500,
+    bounce: 0.3,
+    drag: 3000,
+    speed: 800
+  },
+  dodgeme: {
+    image: 'assets/dodgeme.png',
+    width: 64,
+    height: 64,
+    frames: 1,
+    gravity: 8000, // set to 0 to just use velocity
+    velocity: 1300 // ignored if gravity > 0
+  }
+};
+
+
+
 class BootState {
 
   init() {
@@ -28,9 +57,19 @@ class StartState {
   }
 
   preload() {
-    this.load.image('background','assets/background.png');
-    this.load.spritesheet('dodger','assets/dodger.png',46,64,2); // (w,h,f)
-    this.load.spritesheet('dodge','assets/doge.png',64,64,1); // (w,h,f)
+    this.load.image('background',C.background.image);
+    this.load.spritesheet('dodger',
+      C.dodger.image,
+      C.dodger.width,
+      C.dodger.height,
+      C.dodger.frames
+    );
+    this.load.spritesheet('dodgeme',
+      C.dodgeme.image,
+      C.dodgeme.width,
+      C.dodgeme.height,
+      C.dodgeme.frames
+    );
   }
 
   create() {
@@ -46,32 +85,35 @@ class PlayState {
 
     // background
     this.background = this.add.tileSprite(0,0,320,568,'background');
-    //this.background.autoScroll(0,700);
-    this.background.scale.set(1);
+    this.background.autoScroll(0,C.background.scroll);
+    this.background.scale.set(C.background.scale);
 
     // dodger
-    this.dodger = this.add.sprite(160,510,'dodger');
+    this.dodger = this.add.sprite(C.dodger.startx,C.dodger.starty,'dodger');
     //this.dodger.smoothed = false; 
     //this.dodger.scale.set(1);
     this.dodger.anchor.set(0.5,0.5);
     this.dodger.animations.add('blink');
-    this.dodger.animations.play('blink',2,true); // (name,fps,loop)
+    this.dodger.animations.play('blink',C.dodger.frames,true);
     game.physics.arcade.enable(this.dodger);
     this.dodger.body.collideWorldBounds = true;
-    this.dodger.body.bounce.setTo(0.3);
-    this.dodger.body.drag.setTo(3000);
+    this.dodger.body.bounce.setTo(C.dodger.bounce);
+    this.dodger.body.drag.setTo(C.dodger.drag);
 
-    // dodge
-    this.dodge = this.add.sprite(160,-32,'dodge');
-    //this.dodge.smoothed = false; 
-    //this.dodge.scale.set(1);
-    this.dodge.anchor.set(0.5,0.5);
-    //this.dodge.animations.add('blink');
-    //this.dodge.animations.play('blink',2,true); // (name,fps,loop)
-    game.physics.arcade.enable(this.dodge);
-    this.dodge.body.gravity.y = 8000;
-    //this.dodge.body.velocity.y = 1300;
-
+    // dodgeme
+    this.dodgeme = this.add.sprite(160,-32,'dodgeme');
+    //this.dodgeme.smoothed = false; 
+    //this.dodgeme.scale.set(1);
+    this.dodgeme.anchor.set(0.5,0.5);
+    this.dodgeme.animations.add('blink');
+    this.dodgeme.animations.play('blink',C.dodgeme.frames,true);
+    game.physics.arcade.enable(this.dodgeme);
+    if (C.dodgeme.gravity > 0) {
+      this.dodgeme.body.gravity.y = C.dodgeme.gravity;
+    } else {
+      this.dodgeme.body.velocity.y = C.dodgeme.velocity;
+    }
+    this.resetDodgeme();
 
     // movement keys
     this.cursors = game.input.keyboard.createCursorKeys();
@@ -79,21 +121,24 @@ class PlayState {
 
   update() {
     if (this.cursors.left.isDown) {
-      this.dodger.body.velocity.x = -800;
+      this.dodger.body.velocity.x = -C.dodger.speed;
     }
     if (this.cursors.right.isDown) {
-      this.dodger.body.velocity.x = 800;
+      this.dodger.body.velocity.x = C.dodger.speed;
     }
-    if (this.dodge.y >= 568) {
-      this.dodge.y = -32;
-      this.dodge.body.velocity.y = 0;
-      this.dodge.x = game.rnd.integerInRange(0,320);
+    if (this.dodgeme.y >= 568) {
+      this.resetDodgeme();
     }
-    game.physics.arcade.collide(this.dodge,this.dodger,this.handleCollision);
+    game.physics.arcade.collide(this.dodgeme,this.dodger,this.handleCollision);
+  }
+
+  resetDodgeme() {
+      this.dodgeme.y = -32;
+      this.dodgeme.body.velocity.y = 0;
+      this.dodgeme.x = game.rnd.integerInRange(0,320);
   }
 
   handleCollision() {
-    console.log("OUUCHH");
     game.state.start('End')
   }
 
