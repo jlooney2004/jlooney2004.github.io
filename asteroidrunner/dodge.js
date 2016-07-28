@@ -20,7 +20,7 @@ var C = {
     width: 64,
     height: 64,
     frames: 1,
-    gravity: 8000, // set to 0 to just use velocity
+    gravity: 800, // set to 0 to just use velocity
     velocity: 1300 // ignored if gravity > 0
   }
 };
