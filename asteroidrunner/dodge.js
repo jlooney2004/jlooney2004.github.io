@@ -46,7 +46,7 @@ class PlayState {
 
     // background
     this.background = this.add.tileSprite(0,0,320,568,'background');
-    this.background.autoScroll(0,700);
+    //this.background.autoScroll(0,700);
     this.background.scale.set(1);
 
     // dodger
